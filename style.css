@@ -30,6 +30,11 @@ h1 {
   aspect-ratio: 1;
 }
 
+.grid-item:hover {
+  font-size: 36px;
+  transition: 100ms ease;
+}
+
 .card-1 {
   background-color: rgb(248, 55, 248);
 }
