@@ -1,0 +1,109 @@
+* {
+  font-family: 'Rubik', sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+#game {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  align-content: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px;
+  padding: 10px;
+  gap: 10px;
+}
+
+.grid-item {
+  font-family: 'Lobster Two', cursive;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  border-color: lightgray;
+  border-style: inset;
+  aspect-ratio: 1;
+}
+
+.card-1 {
+  background-color: rgb(248, 55, 248);
+}
+
+.card-2 {
+  background-color: #bcff7c;
+}
+
+.card-3 {
+  background-color: #f9c80e;
+}
+
+.card-4 {
+  background-color: #0d0221;
+}
+
+.card-5 {
+  background-color: rgb(245, 251, 255);
+}
+
+.card-6 {
+  background-color: #2de2e6;
+}
+
+.card-7 {
+  background-color: #791e94;
+}
+
+.card-8 {
+  background-color: #ff6C11;
+}
+
+.hidden {
+  background-color: whitesmoke;
+  border-style: outset;
+  aspect-ratio: 1;
+  opacity: 1;
+  /* transition: 200ms ease-in-out; */
+}
+
+.button-bar {
+  display: grid;
+  grid-template-columns: 210px 210px;
+  padding: 10px;
+  gap: 10px;
+}
+
+.bb3 {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 2;
+}
+
+#start-button {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  width: 150px;
+  height: 50px;
+
+  border-radius: 12px;
+  background-color: rgb(88, 255, 163);
+  
+  text-align: center;
+  font-size: 15px;
+
+  transition: 100ms ease;
+}
+
+#start-button:hover {
+  font-size: 18px;
+}
+
+#start-button.hidden {
+  display: none;
+}
