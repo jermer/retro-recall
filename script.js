@@ -5,6 +5,8 @@ const gameContainer = document.querySelector(".grid-container");
 const guessCounter = document.getElementById("num-guesses");
 const lowScore = document.getElementById("low-score");
 
+let pauseClicks = false;
+
 // get the button and connect the click listener
 const startButton = document.getElementById("start-button");
 startButton.addEventListener("click", startGame);
@@ -58,19 +60,33 @@ function shuffle(array) {
 function createDivsForColors(colorArray) {
   for (let color of colorArray) {
     // create a new div
-    const newDiv = document.createElement("div");
+    const newCell = document.createElement("div");
+    newCell.classList.add("grid-cell");
 
-    // give it a class attribute for the value we are looping over
-    newDiv.classList.add("grid-item");
-    newDiv.classList.add(color);
-    newDiv.classList.add("hidden");
-    newDiv.innerText = '?';
+    const newCellInner = document.createElement("div");
+    newCellInner.classList.add("grid-cell-inner");
+
+    const newCardFront = document.createElement("div");
+    const newCardBack = document.createElement("div");
+
+    newCardFront.classList.add("flip-card-front");
+    newCardFront.classList.add(color);
+
+    newCardBack.classList.add("flip-card-back");
+    newCardBack.innerText = '?';
+    // const newImg = document.createElement("img");
+    // newImg.src = "hex_pattern.png";
+    // newCardBack.append(newImg);
+    
+    newCellInner.append(newCardFront, newCardBack);
+    newCell.append(newCellInner);
+    gameContainer.append(newCell);
 
     // call a function handleCardClick when a div is clicked on
-    newDiv.addEventListener("click", handleCardClick);
+    newCell.addEventListener("click", handleCardClick);
 
     // append the div to the element with an id of game
-    gameContainer.append(newDiv);
+    // gameContainer.append(newDiv);
   }
 }
 
@@ -82,17 +98,30 @@ let numGuesses = 0;
 let prevCard = null;
 
 function handleCardClick(event) {
+  //debugger;
+
+  if (pauseClicks) {
+    console.log("nope!");
+    return;
+  }
+  else {
+    pauseClicks = true;
+    setTimeout(() => { pauseClicks = false }, 300);
+  }
+
   // you can use event.target to see which element was clicked
-  const currCard = event.target;
+  //const currCard = event.target;
+  const currContainer = event.target.parentElement;
+  const currCard = currContainer.firstChild;
   //console.log("you just clicked", event.target);
 
   // check to see if the user clicked a face-up card
-  if (!currCard.classList.contains('hidden')) {
+  if (currContainer.classList.contains('flip-over')) {
     return;
   }
 
-  currCard.classList.toggle('hidden');
-  currCard.innerText = '';
+  currContainer.classList.toggle('flip-over');
+  //currCard.innerText = '';
 
   // if the user does not have a face-up card yet
   // the card they clicked is now face up
@@ -106,7 +135,7 @@ function handleCardClick(event) {
   guessCounter.innerText = numGuesses;
 
   if (currCard.classList.value === prevCard.classList.value) {
-    //console.log("MATCH!")
+    console.log("MATCH!")
     numMatches++;
 
     // check to see if we won the game
@@ -120,7 +149,7 @@ function handleCardClick(event) {
         lowScore.innerText = numGuesses;
         localStorage.setItem('record-low-score', numGuesses);
       }
-      
+
       // display the start button
       startButton.classList.toggle('hidden');
 
@@ -133,10 +162,10 @@ function handleCardClick(event) {
     let c1 = currCard;
     let c2 = prevCard;
     setTimeout(function () {
-      c1.classList.toggle('hidden');
-      c2.classList.toggle('hidden');
-      c1.innerText = '?';
-      c2.innerText = '?';
+      c1.parentElement.classList.toggle('flip-over');
+      c2.parentElement.classList.toggle('flip-over');
+      // c1.innerText = '?';
+      // c2.innerText = '?';
     }, 1000);
     prevCard = null;
   }
