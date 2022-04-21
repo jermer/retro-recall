@@ -1,8 +1,13 @@
 * {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'VT323', monospace;
 }
 
 h1 {
+  text-align: center;
+  font-size: 48px;
+}
+
+h3 {
   text-align: center;
 }
 
@@ -10,7 +15,6 @@ h1 {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
-  align-content: center;
 }
 
 .grid-container {
@@ -21,21 +25,11 @@ h1 {
 }
 
 .grid-cell {
-  /* border-color: lightgray; */
-  /* border-style: inset; */
   background-color: transparent;
-  /* aspect-ratio: 1; */
-  
   height: 100px;
   width: 100px;
-
   perspective: 1000px;
 }
-
-/* .grid-cell:hover {
-  font-size: 36px;
-  transition: 100ms ease;
-} */
 
 .grid-cell-inner {
   position: relative;
@@ -45,20 +39,13 @@ h1 {
   transform-style: preserve-3d;
 }
 
-/* .grid-cell:hover .grid-cell-inner {
-  transform: rotateY(180deg);
-} */
-
-/* .grid-cell-inner {
-  transform: rotateY(180deg);
-} */
-
 .flip-over {
   transform: rotateY(180deg);
 }
 
-
 /** Fronts and Backs **/
+/** Much of this implementation is based on: https://www.w3schools.com/howto/howto_css_flip_card.asp **/
+
 .flip-card-front,
 .flip-card-back {
   position: absolute;
@@ -74,35 +61,22 @@ h1 {
 
 /** Consistent card back **/
 
+img {
+  height: 100px;
+  width: 100px;
+}
+
 .flip-card-front {
   transform: rotateY(180deg);
 }
 
 .flip-card-back {
-  font-family: 'Lobster Two', cursive;
-  /* padding: 20px; */
-  font-size: 30px;
-  text-align: center;
-  background-color: whitesmoke;
+  background-color: gray;
 }
-
-img {
-  /* position: absolute; */
-  height: 100px;
-  width: 100px;
-}
-
-/* .hidden {
-  background-color: whitesmoke;
-  border-style: outset;
-  aspect-ratio: 1;
-  opacity: 1;
-  transition: 200ms ease-in-out;
-} */
 
 /** Individual card fronts **/
 .card-1 {
-  background-color: rgb(248, 55, 248);
+  background-color: #f837f8;
 }
 
 .card-2 {
@@ -133,7 +107,6 @@ img {
   background-color: #ff6C11;
 }
 
-
 /** Style the score and button bar **/
 
 .button-bar {
@@ -141,6 +114,7 @@ img {
   grid-template-columns: 210px 210px;
   padding: 10px;
   gap: 10px;
+  font-size: 24px;
 }
 
 .bb3 {
@@ -158,16 +132,17 @@ img {
   height: 50px;
 
   border-radius: 12px;
-  background-color: rgb(88, 255, 163);
+  color: white;
+  background-color: black;
 
   text-align: center;
-  font-size: 15px;
+  font-size: 22px;
 
   transition: 100ms ease;
 }
 
 #start-button:hover {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 #start-button.hidden {

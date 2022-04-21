@@ -5,13 +5,13 @@ const gameContainer = document.querySelector(".grid-container");
 const guessCounter = document.getElementById("num-guesses");
 const lowScore = document.getElementById("low-score");
 
-let pauseClicks = false;
-
 // get the button and connect the click listener
 const startButton = document.getElementById("start-button");
 startButton.addEventListener("click", startGame);
 
-// current version has 8 colors
+/** game controls **/
+
+// current version has 8 matching pairs
 const COLORS = [
   "card-1",
   "card-2",
@@ -30,6 +30,19 @@ const COLORS = [
   "card-7",
   "card-8"
 ];
+
+// define the maximum number of matches
+const maxMatches = COLORS.length / 2;
+
+// temporarily accept or ignore user clicks
+let pauseClicks = false;
+
+// counters for number of matches and guesses made
+let numMatches = 0;
+let numGuesses = 0;
+
+// placeholder to note whether any cards are currently showing
+let prevCard = null;
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -54,88 +67,79 @@ function shuffle(array) {
   return array;
 }
 
-// this function loops over the array of colors
-// it creates a new div and gives it a class with the value of the color
-// it also adds an event listener for a click for each card
+
+/** build the cards and the game board **/
+
 function createDivsForColors(colorArray) {
   for (let color of colorArray) {
-    // create a new div
+    // create a new div in the grid
     const newCell = document.createElement("div");
     newCell.classList.add("grid-cell");
-
-    const newCellInner = document.createElement("div");
-    newCellInner.classList.add("grid-cell-inner");
-
-    const newCardFront = document.createElement("div");
-    const newCardBack = document.createElement("div");
-
-    newCardFront.classList.add("flip-card-front");
-    newCardFront.classList.add(color);
-
-    newCardBack.classList.add("flip-card-back");
-    newCardBack.innerText = '?';
-    // const newImg = document.createElement("img");
-    // newImg.src = "hex_pattern.png";
-    // newCardBack.append(newImg);
-    
-    newCellInner.append(newCardFront, newCardBack);
-    newCell.append(newCellInner);
-    gameContainer.append(newCell);
 
     // call a function handleCardClick when a div is clicked on
     newCell.addEventListener("click", handleCardClick);
 
-    // append the div to the element with an id of game
-    // gameContainer.append(newDiv);
+    // create a new card container for front and back
+    const newCellInner = document.createElement("div");
+    newCellInner.classList.add("grid-cell-inner");
+
+    // create the card front
+    const newCardFront = document.createElement("div");
+    newCardFront.classList.add("flip-card-front");
+    newCardFront.classList.add(color);
+    const imgFront = document.createElement("img");
+    imgFront.src = `img/${color}.png`;
+    newCardFront.append(imgFront);
+
+    // create the card back
+    const newCardBack = document.createElement("div");
+    newCardBack.classList.add("flip-card-back");
+    const imgBack = document.createElement("img");
+    imgBack.src = `img/card-back.png`;
+    newCardBack.append(imgBack);
+
+    // add all the elements to the page
+    newCellInner.append(newCardFront, newCardBack);
+    newCell.append(newCellInner);
+    gameContainer.append(newCell);
   }
 }
 
-// TODO: Implement this function!
 
-const maxMatches = COLORS.length / 2;
-let numMatches = 0;
-let numGuesses = 0;
-let prevCard = null;
+/** Respond to clicks **/
 
 function handleCardClick(event) {
-  //debugger;
 
+  // we temporarily disable clicking to improve gameplay
   if (pauseClicks) {
-    console.log("nope!");
     return;
   }
-  else {
-    pauseClicks = true;
-    setTimeout(() => { pauseClicks = false }, 300);
-  }
 
-  // you can use event.target to see which element was clicked
-  //const currCard = event.target;
-  const currContainer = event.target.parentElement;
+  // clicks are caught by the image, but we want to act on the 
+  // corresponding grid-cell-inner element (parent > parent)
+  const currContainer = event.target.parentElement.parentElement;
   const currCard = currContainer.firstChild;
   //console.log("you just clicked", event.target);
 
-  // check to see if the user clicked a face-up card
+  // ignore click if we clicked a card that's already face-up
   if (currContainer.classList.contains('flip-over')) {
     return;
   }
 
   currContainer.classList.toggle('flip-over');
-  //currCard.innerText = '';
 
-  // if the user does not have a face-up card yet
-  // the card they clicked is now face up
+  // if we don't have a face-up card yet, then this card is now face-up
   if (!prevCard) {
     prevCard = currCard;
     return;
   }
 
-  // the user is flipping over a second card
+  // we're flipping over a second card
   numGuesses++;
   guessCounter.innerText = numGuesses;
 
   if (currCard.classList.value === prevCard.classList.value) {
-    console.log("MATCH!")
+    // there was a match :)
     numMatches++;
 
     // check to see if we won the game
@@ -158,20 +162,19 @@ function handleCardClick(event) {
     prevCard = null;
   }
   else {
-    //console.log("NO MATCH");
+    // there was not a match :(
     let c1 = currCard;
     let c2 = prevCard;
+    // pause clicks while cards reset
+    pauseClicks = true;
     setTimeout(function () {
       c1.parentElement.classList.toggle('flip-over');
       c2.parentElement.classList.toggle('flip-over');
-      // c1.innerText = '?';
-      // c2.innerText = '?';
-    }, 1000);
+      pauseClicks = false;
+    }, 1500);
     prevCard = null;
   }
 }
-
-// when the DOM loads
 
 function startGame() {
   // empty the game grid
@@ -201,6 +204,6 @@ function startGame() {
   lowScore.innerText = str;
 }
 
-// when the DOM loads
+/** when the DOM loads **/
 let shuffledColors = [];
 startGame();
