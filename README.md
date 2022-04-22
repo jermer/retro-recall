@@ -1,5 +1,5 @@
-# MemoryGame
-This started out as an assignment from the [Springboard](https://www.springboard.com) curriculum on using HTML, CSS, and Javascript. After implementing the basic game functionality I went deeper, adding enhancements to the game interface (the flipping cards) and styling the game to give it a retro 80s look and feel inspired by the game Space Invaders.
+# Retro Recall
+Retro Recall is a memory matching card game that started out as an assignment from the [Springboard](https://www.springboard.com) curriculum on using HTML, CSS, and Javascript. After implementing the basic game functionality I went deeper, adding enhancements to the game interface (the flipping cards) and styling the game to give it a retro 80s look and feel inspired by the game Space Invaders.
 
 ## Acknowledgements
 
